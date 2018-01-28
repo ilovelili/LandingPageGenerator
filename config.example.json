@@ -1,0 +1,8 @@
+{
+    "ftp": {
+        "ip": "<ip>",
+        "port": "<port>",
+        "username": "<ftp username>",
+        "password": "<ftp password>"
+    }
+}
