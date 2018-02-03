@@ -19,4 +19,4 @@
         name: "animenav"
         minute: "*/10"
         user: "{{ user }}"
-        job: "cd {{ execdir }} && ./animenav"
+        job: "cd {{ execdir }} && ./lpg"
