@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/base64"
 	"flag"
+	"fmt"
 	"html/template"
 	"os"
 	"path"
@@ -54,18 +55,37 @@ func main() {
 		ftp.Download(bufchan, *filename)
 	}()
 
-	if err := gocsv.UnmarshalBytesToCallback(<-bufchan, generateLandingPageItem); err != nil {
-		panic(err)
-	}
+	for {
+		select {
+		case <-time.After(time.Second * 5):
+			{
+				fmt.Println("Nothing to download. Bye")
+				os.Exit(0)
+			}
 
-	outputhtml := path.Join("output", "index.html")
-	// remove if exists
-	if _, err := os.Stat(outputhtml); !os.IsNotExist(err) {
-		os.Remove(outputhtml)
-	}
+		case buf := <-bufchan:
+			{
+				if err := gocsv.UnmarshalBytesToCallback(buf, generateLandingPageItem); err != nil {
+					panic(err)
+				}
 
-	if err := generateHTML(outputhtml); err != nil {
-		panic(err)
+				if _, err := os.Stat("./output"); !os.IsNotExist(err) {
+					os.Mkdir("./output", os.ModePerm)
+				}
+
+				outputhtml := path.Join("./output", "index.html")
+				// remove if exists
+				if _, err := os.Stat(outputhtml); !os.IsNotExist(err) {
+					os.Remove(outputhtml)
+				}
+
+				if err := generateHTML(outputhtml); err != nil {
+					panic(err)
+				}
+
+				os.Exit(0)
+			}
+		}
 	}
 }
 

@@ -1,0 +1,22 @@
+#!/usr/bin/env ansible-playbook
+---
+- name: deploy anime nav executable to cron
+  hosts: digitalocean
+  vars:
+    user: "{{ ansible_user }}"
+    home: "{{ ansible_env.HOME }}"
+    execdir: /root/animenav/
+  tasks:    
+    - name: copy compiled file      
+      copy:
+        src: compiled/
+        dest: "{{ execdir }}"
+        owner: "{{ user }}"      
+        mode: 0740
+        
+    - name: setup cron job
+      cron:
+        name: "animenav"
+        minute: "*/10"
+        user: "{{ user }}"
+        job: "cd {{ execdir }} && ./animenav"
