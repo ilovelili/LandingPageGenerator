@@ -6,7 +6,8 @@ all: build
 
 deps:
 	go get -d -v -u github.com/jlaffaye/ftp
-	go get -d -v -u github.com/skip2/go-qrcode
+	go get -d -v -u github.com/skip2/go-qrcode	
+	go get -d -v -u github.com/gocarina/gocsv	
 
 build: deps
 	go build -o lpg
