@@ -13,7 +13,7 @@ build: deps
 	go build -o lpg
 	cp -r config.json run.sh template output ./ansible/playbooks/files/compiled
 	mv lpg ./ansible/playbooks/files/compiled
-	rm ./ansible/playbooks/files/compiled/index.html
+	rm ./ansible/playbooks/files/compiled/output/index.html
 
 version:
 	@echo $(VERSION)
