@@ -23,7 +23,6 @@ type FTP struct {
 
 // client init singleton client
 func (f *FTP) client() (*ftp.ServerConn, error) {
-	var client *ftp.ServerConn
 	var err error
 	once.Do(func() {
 		client, err = ftp.Dial(f.connectionstring())
@@ -38,10 +37,10 @@ func (f *FTP) connectionstring() string {
 }
 
 // Download get file from ftp
-func (f *FTP) Download(bufchan chan<- ([]byte), filenames ...string) (err error) {
+func (f *FTP) Download(bufchan chan<- []byte, filenames ...string) (err error) {
 	client, err := f.client()
+	// defer client.Logout()
 	if err != nil {
-		fmt.Println(err)
 		return
 	}
 
@@ -65,4 +64,22 @@ func (f *FTP) Download(bufchan chan<- ([]byte), filenames ...string) (err error)
 	}
 
 	return
+}
+
+// Delete delete ftp files
+func (f *FTP) Delete(done chan bool, filenames ...string) {
+	client, err := f.client()
+	defer client.Logout()
+	if err != nil {
+		done <- false
+	}
+
+	for _, entry := range filenames {
+		err = client.Delete(entry)
+		if err != nil {
+			done <- false
+		}
+	}
+
+	done <- true
 }

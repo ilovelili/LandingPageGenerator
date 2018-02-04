@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/base64"
+	"errors"
 	"flag"
 	"fmt"
 	"html/template"
@@ -83,7 +84,15 @@ func main() {
 					panic(err)
 				}
 
-				os.Exit(0)
+				deleted := make(chan bool)
+				go ftp.Delete(deleted, *filename)
+
+				if <-deleted {
+					fmt.Println("All Done")
+					os.Exit(0)
+				} else {
+					panic(errors.New("file not deleted"))
+				}
 			}
 		}
 	}
