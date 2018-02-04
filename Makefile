@@ -11,7 +11,7 @@ deps:
 
 build: deps
 	go build -o lpg
-	cp -r config.json template output ./ansible/playbooks/files/compiled
+	cp -r config.json run.sh template output ./ansible/playbooks/files/compiled
 	mv lpg ./ansible/playbooks/files/compiled
 	rm ./ansible/playbooks/files/compiled/index.html
 
