@@ -38,6 +38,12 @@ type LandingPageItem struct {
 	Created  string `csv:"time"`
 }
 
+// RenderingContent content for rendering
+type RenderingContent struct {
+	Items []*LandingPageItem
+	Time  string
+}
+
 func main() {
 	flag.Parse()
 	if *filename == "" {
@@ -127,7 +133,10 @@ func generateHTML(output string) error {
 		return err
 	}
 
-	return t.Execute(file, landingpageitems)
+	return t.Execute(file, &RenderingContent{
+		Items: landingpageitems,
+		Time:  time.Now().Format("2006-01-02 15:04"),
+	})
 }
 
 func passThrough(s string) template.URL {
