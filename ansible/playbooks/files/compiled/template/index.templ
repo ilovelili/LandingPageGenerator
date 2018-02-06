@@ -11,7 +11,7 @@
 
 <body>
     <div class="container">
-        <h3 id="updatedtime"></h3>
+        <h3>Updated at: {{.Time}}</h3>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -21,8 +21,8 @@
                     <th>Created</th>
                 </tr>
             </thead>
-            <tbody>
-                {{range .}}
+            <tbody>                
+                {{range .Items}}
                 <tr>
                     <td>{{.Name}}</td>
                     <td><img src="data:image/png;base64,{{passthrough .URL}}" /></td>
@@ -41,8 +41,4 @@
         </div>
     </div>
 </div>
-<script>
-    var date = new Date();
-    document.getElementById('updatedtime').innerText ='Updated at: ' + date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-</script>
 </html>
