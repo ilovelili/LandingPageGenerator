@@ -15,7 +15,7 @@
             "program": "${fileDirname}",
             "env": {},
             "args": [
-                "-filename=20180127.csv"
+                
             ],
             "showLog": true
         }
